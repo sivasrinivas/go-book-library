@@ -1,0 +1,120 @@
+<html lang="en" ng-app="libraryApp">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Book Library</title>
+
+    <!-- Jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <!-- Angular JS-->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-cookies.js"></script>
+
+    <!-- Bootstrap resources -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+    <!-- App JS -->
+    <script src="static/app.js"></script>
+
+    <style>
+        #search-results tr:hover {
+            cursor: pointer;
+            background-color: slategrey;
+        }
+    </style>
+
+</head>
+
+<body ng-controller="libraryController">
+
+<!-- Begin page content -->
+
+<div class="container">
+
+    <div class="row">
+        <br>
+        <div class="btn-group btn-group-lg btn-group-justified">
+            <a href="#" class="btn btn-primary btn-lg" role="button" id="viewLibrary" ng-click="showLibraryPage()">View
+                Library
+            </a>
+            <a href="#" class="btn btn-primary btn-lg" role="button" id="addBooks" ng-click="showSearchPage()">Add Books
+            </a>
+        </div>
+        <br>
+
+        <div id="viewPage" ng-show="libraryPage==true">
+
+            <table class="table">
+                <thead>
+                <td><a ng-click="setCookie('title'); orderByField='title'; reverseSort = !reverseSort"><b>Title</b><span
+                        ng-show="orderByField == 'title'"><span ng-show="!reverseSort">^</span><span
+                        ng-show="reverseSort">v</span></span></a></td>
+                <td><a ng-click="setCookie('author'); orderByField='author'; reverseSort = !reverseSort"><b>Author</b><span
+                        ng-show="orderByField == 'author'"><span ng-show="!reverseSort">^</span><span
+                        ng-show="reverseSort">v</span></span></a></td>
+                <td><a ng-click="setCookie('classification'); orderByField='classification'; reverseSort = !reverseSort"><b>Classification</b><span
+                        ng-show="orderByField == 'classification'"><span ng-show="!reverseSort">^</span><span
+                        ng-show="reverseSort">v</span></span></a></td>
+                <td></td>
+                </thead>
+                <tbody>
+                <tr ng-repeat="book in books|orderBy:orderByField:reverseSort" scope="row">
+                    <td>{{book.title}}</td>
+                    <td>{{book.author}}</td>
+                    <td>{{book.classification}}</td>
+                    <td>
+                        <button class="btn btn-danger" type="button" ng-click="deleteBook($index, book.pk)">Delete
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="searchPage" ng-show="searchPage==true">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for..." aria-label="Search for..."
+                       ng-model="searchStr" id="search-string">
+                <span class="input-group-btn">
+                <button class="btn btn-primary" type="button" id="search-button" ng-click="getBooks()">Go!</button>
+            </span>
+            </div>
+
+            <br>
+            <table class="table" ng-show="searchBooks != null">
+                <thead>
+                <td><b>Title</b></td>
+                <td><b>Author</b></td>
+                <td><b>Year</b></td>
+                <td><b>Id</b></td>
+                </thead>
+                <tbody id="search-results">
+                <tr ng-repeat="book in searchBooks" ng-click="addBook(book)">
+                    <td>{{book.Title}}</td>
+                    <td>{{book.Author}}</td>
+                    <td>{{book.Year}}</td>
+                    <td>{{book.Id}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div><!-- /.container -->
+
+</body>
+
+</html>
