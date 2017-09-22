@@ -31,7 +31,7 @@
     <style>
         #search-results tr:hover {
             cursor: pointer;
-            background-color: slategrey;
+            background-color: rgba(185, 182, 191, 0.76);
         }
     </style>
 
@@ -90,6 +90,11 @@
                 <span class="input-group-btn">
                 <button class="btn btn-primary" type="button" id="search-button" ng-click="getBooks()">Go!</button>
             </span>
+            </div>
+            <br>
+            <div class="alert alert-success alert-dismissible" role="alert" ng-show="addBookSuccessMsg != null">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <span>{{addBookSuccessMsg}}</span>
             </div>
 
             <br>

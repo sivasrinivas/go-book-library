@@ -7,6 +7,7 @@ libraryApp.controller('libraryController', function libraryController($scope, $h
     $scope.searchPage = false;
     $scope.reverseSort = false;
     $scope.orderByField = null;
+    $scope.addBookSuccessMsg = null;
 
     //On page load, get all added books
     $http.get("/books").then(function (response) {
@@ -24,6 +25,10 @@ libraryApp.controller('libraryController', function libraryController($scope, $h
     };
 
     $scope.showSearchPage = function () {
+        //if searchPage is previously set to false, clear addBookSuccessMsg
+        if ($scope.searchPage == false) {
+            $scope.addBookSuccessMsg = null;
+        }
         $scope.libraryPage = false;
         $scope.searchPage = true;
     };
@@ -37,7 +42,10 @@ libraryApp.controller('libraryController', function libraryController($scope, $h
 
     $scope.addBook = function (book) {
         $http.post("/books/" + book.Id).then(function (response) {
-            $scope.books.push(response.data)
+            if (response.status == 200) {
+                $scope.books.push(response.data)
+                $scope.addBookSuccessMsg = 'Added \'' + response.data.title +'\' to your library successfully';
+            }
         });
     };
 
